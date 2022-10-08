@@ -13,7 +13,7 @@ const onLocationChange= (ev) => {
 	console.log("onLocationChange", {asUser, location, ev});
 	if (location==null || !asUser) return;
 	const loc= { ...location, params: ser_urlparams_r(location.search||'')}
-	actionSet({ "navigation_location": loc });
+	actionSet && actionSet({ "navigation_location": loc }); //TODO: vitest marca la funcion como no definida
 };
 
 export const connectStore= (store) => {

@@ -37,6 +37,10 @@ export const rteSet= (p2v, pfx, id) => {
 		args: {p2v: p2v, pfx} 
 	});
 }
-export const rteGet= (paths, pfx, dstKv) => select( selectFromState_f(paths, pfx, dstKv) );
+export const rteGet= (paths, pfx, dstKv) => {
+	const f= select( selectFromState_f(paths, pfx, dstKv) );
+	f.args= { paths, pfx, dstKv }; //U: para testing
+	return f;
+}
 
 

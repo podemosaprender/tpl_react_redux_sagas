@@ -7,7 +7,7 @@
     "build": "vite build",
     "clean": "rm -Rf build",
     "serve": "vite preview",
-    "test": "jest"
+    "test": "vitest --config vite.config.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
@@ -29,5 +29,10 @@
   },
   "glitch": {
     "projectType": "generated_static"
+  },
+  "devDependencies": {
+    "@redux-saga/testing-utils": "^1.1.5",
+    "happy-dom": "^7.4.0",
+    "vitest": "^0.24.0"
   }
 }

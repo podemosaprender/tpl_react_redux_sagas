@@ -79,19 +79,33 @@ npm run build
 
 La carpeta `rte` tiene nuestra librería, si no querés usarla podés ir extrayendo de ahí el código que necesites y después la borrás.
 
-Hay una carpeta `app_ejemplo` con una aplicación muy simple para que pruebes todos los conceptos. Podés copiarla para hacer experimentos y como base para tu aplicación. Alcanza camiar en `src/App.jsx` cual cargás como principal y listo.
+Hay una carpeta `app_ejemplo` con una aplicación muy simple y código muy comentado para que pruebes todos los conceptos. Podés copiarla para hacer experimentos y como base para tu aplicación. Alcanza cambiar en `src/App.jsx` cual cargás como principal y listo.
 
-### 
+### Workflow
 
-XXX:Ingredientes
-* Store, k1/k2/k3= valor
-* Mensajes=eventos
+Logramos tener dos partes bien separadas:
 
-XXX:Workflow
+* Visuales: solamente elegir que mostrar y cómo
+   1. Escribir componentes con html y css
+   2. Tomar valores del store con `useSelectorAt` para mostrar, elegir estilos con if, etc.
+   3. Enviarle mensajes al store con `actionSet` o `action` para que ejecute Sagas que cambian el estado.
+   4. Para probar podés cargar cualquier estado y navegación que quieras en las DevTools de Redux de un archivito .json que podés hacer a mano.
+* Lógica: solamente qué hacer cuando llega tal o cual mensaje y cambiar el estado.
 
-* html solo, componentes
+Así se pueden hacer en momentos separados, personas separadas con habilidades distintas, etc.
 
-* sagas y sus tests
+En general la **parte visual** la hacés con una librería como http://bulma.io o [Prime React](https://www.primefaces.org/primereact/) y te la pasás buscando ejemplos de 5 o 10 líneas con tags, clases, estilos, etc. que copiás, pegás o modificiás. Todo el tiempo querés ir probando como quedarían textos de distinto tamaño, cantidad, etc.  Por eso es tan cómodo simplemente ir copiando y pegando ejemplos e cargar el estado que necesites con las DevTools de Redux.
+
+Si vas a `src/app_ejemplo/App.jsx` vas a ver componentes que hacen eso y podés modificar y probar ya mismo. XXX:poner estados.json de ejemplo.
+
+En cambio para la **parte lógica** querés trabajar en dos cosas: la lista de todos los estados y transiciones de uno a otro que tienen que ser posibles y los que no. Por ejemplo nunca debería pasar que me cobres de la tarjeta y se pierda mi pago: yo no sepa que paso, ni como reclamar, ni como avisarte que pague... Aunque la seguridad siempre hay que garantizarla en el servidor porque lo que pasa en el navegador lo puede manipular cualquiera, hay consecuencias legales y comerciales de lo que le mostrás a las personas que usan tu web. Con este método podés :
+
+* Generar y probar estados posibles cada uno como un json
+* Definir funciones que los revisen y digan si son aceptables o no (en algunos libros se llaman _invariantes_)
+* Definir los mensajes y transiciones de un estado a otro y cuando los permitís y cuando no
+* Revisar que tu programa nunca quede _trabado_ en un estado que no debía, ej. a mitad de una compra o pago.
+
+
 
 ## Usar una librería de componentes de UI
 
