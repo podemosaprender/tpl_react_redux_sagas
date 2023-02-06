@@ -1,0 +1,33 @@
+{
+  "name": "PodemosAprenderReact",
+  "version": "1.0.0",
+  "description": "Una UI para PodemosAprender con React",
+  "scripts": {
+    "start": "vite --host 0.0.0.0 --port 3001",
+    "build": "vite build",
+    "clean": "rm -Rf build",
+    "serve": "vite preview",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
+    "@vitejs/plugin-react": "^2.1.0",
+    "history": "^5.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.4",
+    "redux-saga": "^1.2.1",
+    "vite": "^3.1.4",
+    "vite-plugin-compress": "^2.1.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">12"
+  },
+  "glitch": {
+    "projectType": "generated_static"
+  }
+}
