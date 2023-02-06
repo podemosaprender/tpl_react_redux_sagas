@@ -1,11 +1,14 @@
 //SIN VITEST: import { defineConfig } from "vite";
 import { defineConfig } from 'vitest/config';
+import { splitVendorChunkPlugin } from 'vite'; //VER: https://vitejs.dev/guide/build.html#chunking-strategy
+import compress from 'vite-plugin-compress'; //TODO: tiene algun problema con writeBundle y como lo llama vite
+
 
 import react from "@vitejs/plugin-react";
-import compress from 'vite-plugin-compress'
-//
 //import eslint from 'vite-plugin-eslint';
-//XXX:PREACT import preact from "@preact/preset-vite";
+//XXX:PREACT 
+//import preact from "@preact/preset-vite";
+import alias from '@rollup/plugin-alias';
 
 import { dependencies } from './package.json';
 import { resolve } from 'path'
@@ -27,14 +30,14 @@ function renderChunks(deps) {
 
 // https://vitejs.dev/config/
 export default defineConfig( ({command, mode}) => {
-	CFG= {
+	const CFG= {
 		esbuild: { loader: "jsx", include: /src[\/\\].*\.jsx?$/, exclude: [] }, 
 		optimizeDeps: { esbuildOptions: { plugins: [ { name: "load-js-files-as-jsx", setup(build) { build.onLoad({ filter: /src[\/\\].*\.js$/ }, async (args) => { return ({ loader: "jsx", contents: await fs.promises.readFile(args.path, "utf8"), }) }); }, }, ], }, },
 		plugins: [
 			react(),
-			//reactRefresh(),
-			//XXX:PREACT preact(),
-			compress({ exclude: ["**/*.js","**/*.css"] }),
+			//PARA:PREACT 
+			//preact(),
+			splitVendorChunkPlugin(),
 		],
 		define: { //VER: https://vitejs.dev/config/#environment-variables
 			'import.meta.vitest': undefined,
@@ -58,7 +61,20 @@ export default defineConfig( ({command, mode}) => {
 					...renderChunks(dependencies),
 				},
 				*/
-				}
+				},
+				plugins: [ 
+					//PREACT VER: https://preactjs.com/guide/v10/getting-started/#aliasing-in-rollup
+					/*
+					alias({
+						entries: [
+							{ find: 'react', replacement: 'preact/compat' },
+							{ find: 'react-dom/test-utils', replacement: 'preact/test-utils' },
+							{ find: 'react-dom', replacement: 'preact/compat' },
+							{ find: 'react/jsx-runtime', replacement: 'preact/jsx-runtime' }
+						]
+					})
+				 */
+				]
 			},
 		},
 		css: {

@@ -111,7 +111,7 @@ const EjComponenteActionSagas= () => { //TUTORIAL: enviar un mensaje para proces
 */
 export default () => { //U: este es el componente principal que elige que mostrar
 	return (<>
-		<h1>Hola, este es un ejemplo</h1>
+		<h1>Hola, este es un ejemplo!</h1>
 		<DondeEstoy />
 
 		<div>

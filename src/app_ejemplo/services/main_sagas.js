@@ -8,7 +8,7 @@ import { navigationPush } from '../../rte';
 import { logmsg, ser_urlparams } from '../../rte';
 
 //S: APP *****************************************************
-const import_eth_sagas= importDynamic(() => import('../../rte/lib/ethereum')); //TUTORIAL: importar cuando necesito
+//TUTORIAL: const import_eth_sagas= importDynamic(() => import('../../rte/lib/ethereum')); //TUTORIAL: importar cuando necesito
 
 function* onLocationChange() {
 	try {
