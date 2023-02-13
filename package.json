@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Una UI para PodemosAprender con React",
   "scripts": {
-    "start": "vite --host 0.0.0.0 --port 3001",
+		"start": "vite",
+    "startlocal": "vite --host 0.0.0.0 --port 3001",
     "build": "vite build",
     "clean": "rm -Rf build",
     "serve": "vite preview",
@@ -25,7 +26,10 @@
     "not dead"
   ],
   "engines": {
-    "node": ">12"
+    "node": "14.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/glitch-hello-react"
   },
   "glitch": {
     "projectType": "generated_static"

@@ -81,6 +81,8 @@ export default defineConfig( ({command, mode}) => {
 			postcss: "postcss.config.js",
 		},
 		server: {
+    	host:"0.0.0.0",
+    	port:3000,
 			strictPort: true,
 			hmr: {
 				port: HMR_PORT,
