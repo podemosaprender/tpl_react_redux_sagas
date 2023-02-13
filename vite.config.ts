@@ -15,7 +15,7 @@ import { resolve } from 'path'
 import fs from "fs";
 
 const estamosEnGlitch= process.env.PROJECT_REMIX_CHAIN!=null //A: la encontre con set en consola de glitch
-const HMR_PORT= estamosEnGlitch ? 443 : null; 
+const HMR_PORT= estamosEnGlitch ? 1443 : null; //A: en glitch sirvio 1443 aunque su ejemplo tenia 443
 //A: En glitch hay que indicarle al navegador que se conecte al de https pubico donde se ve la pagina
 console.log('HMR_PORT',HMR_PORT);
 
