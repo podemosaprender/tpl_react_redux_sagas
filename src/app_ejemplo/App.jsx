@@ -4,6 +4,10 @@ import React, {useEffect, useState} from 'react';
 import { t, useSelectorsAt, action, action_f, actionSet, useStateWithUpdate } from '../rte';
 //A: cargue lo que siempre necesito de React y rte, podría eliminar lo que no uso
 
+import "primereact/resources/themes/soho-dark/theme.css";     
+//A: theme SEE: https://primereact.org/theming/#builtinthemes
+import "primereact/resources/primereact.min.css";                
+//A: core
 
 //S: lanzar servicios (no ui) ********************************
 import './services/main_sagas'; 
@@ -87,6 +91,18 @@ const EjComponenteActionSagas= () => { //TUTORIAL: enviar un mensaje para proces
 	//y cuando quieras escribis las Sagas para procesarlas (si necesitas)
 }
 
+import { Calendar } from 'primereact/calendar';
+
+function PrimeCalendarDemo() {
+    const [date, setDate] = useState(null);
+
+    return (
+        <div className="card flex justify-content-center">
+            <Calendar value={date} onChange={(e) => setDate(e.value)} />
+        </div>
+    )
+}
+
 /* TUTORIAL:
 
  Ahora uso los componentes que importé o definí.
@@ -112,7 +128,17 @@ const EjComponenteActionSagas= () => { //TUTORIAL: enviar un mensaje para proces
 export default () => { //U: este es el componente principal que elige que mostrar
 	return (<>
 		<h1>Hola, este es un ejemplo!</h1>
+		<PrimeCalendarDemo />
 		<DondeEstoy />
+
+		<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="#">Bulma</a></li>
+    <li><a href="#">Documentation</a></li>
+    <li><a href="#">Components</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
+  </ul>
+</nav>
 
 		<div>
 			<EjComponenteMostrar titulo="contador" />
