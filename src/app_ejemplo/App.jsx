@@ -2,6 +2,7 @@
 
 import React, {useEffect, useState} from 'react';
 import { t, useSelectorsAt, action, action_f, actionSet, useStateWithUpdate } from '../rte';
+import { useSelectorsAt as estadoLeer,  actionSet as estadoPoner, action_f as accionPedir } from '../rte';
 //A: cargue lo que siempre necesito de React y rte, podría eliminar lo que no uso
 
 import "primereact/resources/themes/soho-dark/theme.css";     
@@ -65,7 +66,7 @@ const EjComponenteAccionSet= () => { //TUTORIAL: modifica un valor en el store d
 }
 
 const EjComponenteMostrarConIf= () => { //TUTORIAL: podes elegir que mostrar en base al store con un if donde quieras, MEJOR que un router
-	const [estadoSorteo, mensajeSorteo]= useSelectorsAt('sorteo{estado sorteo{mensaje'); 
+	const [estadoSorteo, mensajeSorteo]= estadoLeer('sorteo{estado sorteo{mensaje'); 
 	//TUTORIAL: a la izq del = hay un array de nombres dentro de esta funcion, 
 	// a la derecha hay "paths" dentro del diccionario del store
 	// ej. sorteo{estado quiere decir "la clave estado dentro del diccionario en la clave sorteo"
