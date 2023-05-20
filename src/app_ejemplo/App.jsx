@@ -8,6 +8,7 @@ import { useSelectorsAt as estadoLeer,  actionSet as estadoPoner, action_f as ac
 import "primereact/resources/themes/soho-dark/theme.css"; //A: theme SEE: https://primereact.org/theming/#builtinthemes
 import 'primeicons/primeicons.css'; //A: iconos
 import "primereact/resources/primereact.min.css"; //A: core
+import "primeflex/primeflex.css"; //A: grilla y columnas SEE: https://www.primefaces.org/primeflex/
 
 //S: lanzar servicios (no ui) ********************************
 import './services/main_sagas'; 
@@ -39,6 +40,7 @@ import Navbar from './prime/components/Navbar.jsx';
 
 import PaginaQuienesSomos from './prime/pages/PaginaQuienesSomos.jsx'; //TUTORIAL: las "páginas" tambien son componentes
 import PaginaInicio from './prime/pages/PaginaInicio.jsx'; 
+import PaginaComprar from './prime/pages/PaginaComprar.jsx'; 
 
 const items = [ //U: los items de la navbar
 		{
@@ -92,9 +94,10 @@ const EjComponenteMostrarConIf= () => { //TUTORIAL: podes elegir que mostrar en 
 	// a la derecha hay "paths" dentro del diccionario del store que podes ver con redux
 	return (<div>
 		<h2>Quiere ver {queQuiereVer}</h2>
-		{ queQuiereVer=='QuienesSomos' 
-				? <PaginaQuienesSomos />
-				: <PaginaInicio />
+		{ 
+			queQuiereVer=='QuienesSomos' ? <PaginaQuienesSomos /> :
+			queQuiereVer=='Comprar' ? <PaginaComprar /> :
+			<PaginaInicio />
 		}
 	</div>)
 }
