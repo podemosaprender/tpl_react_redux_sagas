@@ -7,6 +7,8 @@ import { useSelectorsAt as estadoLeer,  actionSet as estadoPoner, action_f as ac
 
 import "primereact/resources/themes/soho-dark/theme.css";     
 //A: theme SEE: https://primereact.org/theming/#builtinthemes
+import 'primeicons/primeicons.css';
+//A: iconos
 import "primereact/resources/primereact.min.css";                
 //A: core
 
@@ -104,6 +106,9 @@ function PrimeCalendarDemo() {
     )
 }
 
+import Navbar from './prime/components/Navbar.jsx';
+import PrimeConfirm from './prime/components/Confirm.jsx';
+
 /* TUTORIAL:
 
  Ahora uso los componentes que importé o definí.
@@ -128,16 +133,21 @@ function PrimeCalendarDemo() {
 */
 export default () => { //U: este es el componente principal que elige que mostrar
 	return (<>
+		<Navbar />
+
+		
 		<h1>Hola, este es un ejemplo!</h1>
 		<PrimeCalendarDemo />
+		<PrimeConfirm />
+
 		<DondeEstoy />
 
-		<nav class="breadcrumb" aria-label="breadcrumbs">
+		<nav className="breadcrumb" aria-label="breadcrumbs">
   <ul>
     <li><a href="#">Bulma</a></li>
     <li><a href="#">Documentation</a></li>
     <li><a href="#">Components</a></li>
-    <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
+    <li className="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
   </ul>
 </nav>
 

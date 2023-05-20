@@ -56,9 +56,43 @@ function* sortear() { //TUTORIAL: una saga que va actualizando el store (y la UI
 
 }
 
+function* actualizar_datos_json() {
+	while (true) {
+		const res= yield rteCall(fetch, 'http://kch:8080/xd.json')
+		const datos= yield rteCall([res,'json'])
+		datos.leido= new Date()
+		yield rteSet({datosServidor: datos})
+		yield delay(2000);	
+	}
+}
+
+function* actualizar_datos_tsv() {
+	while (true) {
+		const res= yield rteCall(fetch, 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6hasUciqFkYOjjTOUq8gVpIKicOFw7AOpfAP9TvTmJxo-I529VO1t-Zskt-Nvn8VWIJpdYJWsAlCW/pub?gid=0&single=true&output=tsv'); //A: me lo da la planilla de Google cuando elijo "publicar en la web"
+		const texto= yield rteCall([res,'text'])
+		const datos= {}
+		let encabezado= null;
+		texto.split(/\r?\n/).forEach(l => {
+			let v= l.split('\t');
+			if (encabezado==null) { encabezado= v; } //A: primera fila
+			else {
+				let o= {}; encabezado.forEach( (k,i) => { o[k]= v[i] })
+				datos[ v[0] ]= o;
+			}
+		})
+
+		datos._leido= new Date()
+		yield rteSet({datosServidor: datos})
+		yield delay(2000);	
+	}
+}
+
+
 //S: MAIN **************************************************
 export function* autorunSaga() { //U: un solo punto de entrada para todas las "sagas"
 	yield rteCall(onLocationChange); //A: actualizar el estado segun a que url entro, la primera vez
+
+	//yield rteCall(actualizar_datos_tsv); //U: leer periodicamente de una planilla google XXX
 
 	yield takeEvery('SET/navigation_location', onLocationChange); //A: cada vez que cambia la url o sus parametros
 	yield takeEvery('sortear', sortear); //TUTORIAL: cuando llegue el mensaje "sortear" emitido por action llama esta saga
