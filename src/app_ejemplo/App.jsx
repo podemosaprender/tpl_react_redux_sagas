@@ -5,33 +5,18 @@ import { t, useSelectorsAt, action, action_f, actionSet, useStateWithUpdate } fr
 import { useSelectorsAt as estadoLeer,  actionSet as estadoPoner, action_f as accionPedir } from '../rte';
 //A: cargue lo que siempre necesito de React y rte, podría eliminar lo que no uso
 
-import "primereact/resources/themes/soho-dark/theme.css";     
-//A: theme SEE: https://primereact.org/theming/#builtinthemes
-import 'primeicons/primeicons.css';
-//A: iconos
-import "primereact/resources/primereact.min.css";                
-//A: core
+import "primereact/resources/themes/soho-dark/theme.css"; //A: theme SEE: https://primereact.org/theming/#builtinthemes
+import 'primeicons/primeicons.css'; //A: iconos
+import "primereact/resources/primereact.min.css"; //A: core
 
 //S: lanzar servicios (no ui) ********************************
 import './services/main_sagas'; 
 
-actionSet( {hola: 10, "ahora{son": new Date()} )
+actionSet( {quiereVer: 'Inicio', "ahora{son": new Date()} )
 //A: inicializamos el Store como más nos guste, con un Diccionario (Object)
 
 //S: ui configuracion general ********************************
 //U: cargar css y otras cosas que se hacen una sola vez para toda la app
-
-/* TUTORIALEMPLO: usar libreria de UI primereact
-import 'primereact/resources/themes/md-light-deeppurple/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
-*/
-
-/* TUTORIALEMPLO: usar libreria de UI bulma
-import 'bulma/css/bulma.css';
-import 'bulmaswatch/united/bulmaswatch.min.css';
-*/
 
 import './index.css'; //U: nuestro css
 //OjO! purgueCSS necesita classNames como strings ENTEROS (no sumar)
@@ -50,64 +35,23 @@ import './index.css'; //U: nuestro css
 */
 
 import DondeEstoy from '../rte/ui/components/LocationPre'; //TUTORIAL: un componente que te muestra la info del store sobre la url
-
-const EjComponenteMostrar= ({titulo}) => { //TUTORIAL: muestra un valor del store con un titulo que recibe como parametro
-	const [cont1]= useSelectorsAt('cont1');
-	return (<>
-		{titulo}= {cont1}
-	</>)
-}
-		
-const EjComponenteAccionSet= () => { //TUTORIAL: modifica un valor en el store directamente, como haria un input, form, etc.
-	const [cont1]= useSelectorsAt('cont1');
-	const cuandoPresionaElBoton= () => actionSet({cont1: (cont1 || 0) +1}); //TUTORIAL: la funcion que llama onClick
-
-	return (
-			<button onClick={ cuandoPresionaElBoton }> +1 </button>
-	)
-}
-
-const EjComponenteMostrarConIf= () => { //TUTORIAL: podes elegir que mostrar en base al store con un if donde quieras, MEJOR que un router
-	const [estadoSorteo, mensajeSorteo]= estadoLeer('sorteo{estado sorteo{mensaje'); 
-	//TUTORIAL: a la izq del = hay un array de nombres dentro de esta funcion, 
-	// a la derecha hay "paths" dentro del diccionario del store
-	// ej. sorteo{estado quiere decir "la clave estado dentro del diccionario en la clave sorteo"
-	
-	return (<div>
-		<h1>Aca va el sorteo</h1>
-		{ estadoSorteo=='ganaste'
-			? <img src="https://bestanimations.com/media/fireworks/671801409ba-awesome-coloful-fireworks-animated-gif-image-3.gif" alt="fuegos artificiales coloridos para festejar" />
-			: estadoSorteo=='perdiste'
-			? <div>Perdiste! Seguí participando (se gana con contador=3 guiño guiño)<br />{ mensajeSorteo }</div>
-			: <div>{ mensajeSorteo || 'Todavía no hubo sorteo?' }</div>
-		}
-	</div>)
-}
-
-const EjComponenteActionSagas= () => { //TUTORIAL: enviar un mensaje para procesar con sagas
-	return (
-			<button onClick={ action_f('sortear') }>SORTEO</button>
-	)
-	//TUTORIAL: action_f me fabrica directamente una funcion con mensaje y parametros
-	//la ventaja de hacerlo asi es que podes poner los botones y acciones, 
-	//verlos en las DevTools de Redux
-	//y cuando quieras escribis las Sagas para procesarlas (si necesitas)
-}
-
-import { Calendar } from 'primereact/calendar';
-
-function PrimeCalendarDemo() {
-    const [date, setDate] = useState(null);
-
-    return (
-        <div className="card flex justify-content-center">
-            <Calendar value={date} onChange={(e) => setDate(e.value)} />
-        </div>
-    )
-}
-
 import Navbar from './prime/components/Navbar.jsx';
-import PrimeConfirm from './prime/components/Confirm.jsx';
+
+import PaginaQuienesSomos from './prime/pages/PaginaQuienesSomos.jsx'; //TUTORIAL: las "páginas" tambien son componentes
+import PaginaInicio from './prime/pages/PaginaInicio.jsx'; 
+
+const items = [ //U: los items de la navbar
+		{
+			label: 'Inicio',
+			icon: 'pi pi-fw pi-file',
+			command: () => estadoPoner({quiereVer: 'Inicio'}),
+		},
+		{
+			label: '¿Quiénes somos?',
+			icon: 'pi pi-fw pi-pencil',
+			command: () => estadoPoner({quiereVer: 'QuienesSomos'}),
+		},
+	];
 
 /* TUTORIAL:
 
@@ -133,34 +77,25 @@ import PrimeConfirm from './prime/components/Confirm.jsx';
 */
 export default () => { //U: este es el componente principal que elige que mostrar
 	return (<>
-		<Navbar />
-
-		
+		<Navbar items={items}/>
 		<h1>Hola, este es un ejemplo!</h1>
-		<PrimeCalendarDemo />
-		<PrimeConfirm />
 
-		<DondeEstoy />
-
-		<nav className="breadcrumb" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="#">Bulma</a></li>
-    <li><a href="#">Documentation</a></li>
-    <li><a href="#">Components</a></li>
-    <li className="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
-  </ul>
-</nav>
-
-		<div>
-			<EjComponenteMostrar titulo="contador" />
-			<EjComponenteAccionSet />
-			<div style={{ marginTop: '2em' }}>
-				<EjComponenteActionSagas />
-				<EjComponenteMostrarConIf />
-			</div>
-		</div>
+		<EjComponenteMostrarConIf />
 	</>)
 
 	//TUTORIAL: fijate que "style" es un diccionario que podes preparar afuera con if, etc.
+}
+
+const EjComponenteMostrarConIf= () => { //TUTORIAL: podes elegir que mostrar en base al store con un if donde quieras, MEJOR que un router
+	const [queQuiereVer]= estadoLeer('quiereVer'); 
+	//TUTORIAL: a la izq del = hay un array de nombres dentro de esta funcion, 
+	// a la derecha hay "paths" dentro del diccionario del store que podes ver con redux
+	return (<div>
+		<h2>Quiere ver {queQuiereVer}</h2>
+		{ queQuiereVer=='QuienesSomos' 
+				? <PaginaQuienesSomos />
+				: <PaginaInicio />
+		}
+	</div>)
 }
 
