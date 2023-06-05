@@ -1,5 +1,6 @@
 //SIN VITEST: import { defineConfig } from "vite";
 import { defineConfig } from 'vitest/config';
+import basicSsl from '@vitejs/plugin-basic-ssl'; //U: https para desarrollo
 import { splitVendorChunkPlugin } from 'vite'; //VER: https://vitejs.dev/guide/build.html#chunking-strategy
 import compress from 'vite-plugin-compress'; //TODO: tiene algun problema con writeBundle y como lo llama vite
 
@@ -34,6 +35,7 @@ export default defineConfig( ({command, mode}) => {
 		esbuild: { loader: "jsx", include: /src[\/\\].*\.jsx?$/, exclude: [] }, 
 		optimizeDeps: { esbuildOptions: { plugins: [ { name: "load-js-files-as-jsx", setup(build) { build.onLoad({ filter: /src[\/\\].*\.js$/ }, async (args) => { return ({ loader: "jsx", contents: await fs.promises.readFile(args.path, "utf8"), }) }); }, }, ], }, },
 		plugins: [
+			basicSsl(),
 			react(),
 			//PARA:PREACT 
 			//preact(),
