@@ -5,7 +5,7 @@ import {
 	importDynamic, rteRunSaga, takeEvery, all, delay 
 } from '../../rte';
 import { navigationPush } from '../../rte';
-import { logmsg, ser_urlparams } from '../../rte';
+import { logmsg, ser_urlparams, set_p, get_p } from '../../rte';
 
 //S: copiado de dwimer
 
@@ -77,11 +77,23 @@ function speech_to_text_p(params) {
 window.speech_to_text_p= speech_to_text_p; 
 
 //S: SPEECH **************************************************
+const REEMPLAZOS= {
+	'cero': '0', 'uno': '1','dos': '2','tres':'3','cuatro':'4','cinco':'5', 'seis':'6',
+}
+const CON_ACENTO='áéíóú';
+const SIN_ACENTO='aeiou';
+
+function reemplazar(s) {
+	s= s.toLowerCase().split('').map(l => { let i= CON_ACENTO.indexOf(l); return i==-1 ? l : SIN_ACENTO[i] }).join('');
+	Object.keys(REEMPLAZOS).forEach( k => { s= s.replace(new RegExp('\\b'+k+'\\b','g'), REEMPLAZOS[k] ) });
+	return s;
+}
+
 function* onListenFor() {
 	let quiereSeguir= true;
 	let misitems= { }
 	let acc= [];
-	yield rteSet({listening: { sts: 'listen', acc: [], items: {...misitems}}});
+	yield rteSet({listening: { sts: 'listen', acc: [], items: {}}});
 	while (quiereSeguir) {
 		let resultado='no entendi';
 		try {
@@ -94,14 +106,14 @@ function* onListenFor() {
 				else if (c=="borrar todo") { acc=[]; resultado='borrado todo' }
 				else {
 					let m; 
-					if (m= c.match(/guardar en (.*)/i)) { 
+					if (false) {
+					} else if	(m= c.match(/guardar en clave (.*)/i)) { 
+						set_p(misitems, '/'+reemplazar(m[1]).replace(/\s+/,'/'), acc[0]); resultado='guardado en '+m[1]; 
+					} else if (m= c.match(/poner en (.*)/i)) { 
 						misitems[ m[1] ]= [...acc]; resultado='guardado en '+m[1]; 
 					} else if (m= c.match(/leer de (.*)/i)) { 
-						let n= parseInt(m[1]);
-						if (isNaN(n)) {
-							n= ['cero','uno','dos','tres','cuatro','cinco'].indexOf(m[1]);
-						}
-						if (n>-1) {
+						let n= parseInt( reemplazar( m[1] ));
+						if (!isNaN(n) && n>-1) {
 							yield rteCall(speech_from_text_p, acc[n] )
 							resultado= 'si'
 						}
@@ -113,7 +125,7 @@ function* onListenFor() {
 				resultado= ''+acc.length;
 				acc.push(txt);
 			}
-			yield rteSet({listening: { sts: 'done', acc: [...acc], items: {...misitems}}});
+			yield rteSet({listening: { sts: 'done', acc: [...acc], items: JSON.parse(JSON.stringify(misitems))}});
 			yield rteCall(speech_from_text_p, resultado)
 		} catch(ex) { alert(ex) }
 	}

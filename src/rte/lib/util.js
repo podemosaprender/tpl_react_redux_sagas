@@ -4,6 +4,11 @@
 export function logmsg(msg, data) {
 	const dataOk= typeof(data)=='function' ? data() : data;
 	console.log(msg, JSON.stringify(dataOk, null,2));
+	alert(msg);
+}
+
+export function logmex(t,l,msg,data, ex) {
+	logmsg([t,l,msg, ex+''].join(':'), data)
 }
 
 export const nop= (state) => state //U: no cambia nada
@@ -38,6 +43,10 @@ export function set_p(dst,p,v,wantsIfNotSet,sepRe) { //U: pone un valor en un "p
 	//A: p empieza con un separador => parts[0] se ignora, parts[i] es tipo, parts[i+1] clave
 	var dd= get_p_impl(dst,p,1,1,sepRe);	
 	var dstp= dd[0];
+	if (typeof(dstp)!='object') { //A: si no habia un kv
+		dstp= {}	
+		dd[1]= set_p(dd[1],parts.slice(0,parts.length-2),dstp,false,sepRe);
+	}
 	//DBG logm("DBG",1,"LIB set_p",{p: p, dstp: dstp});
 	try {
 		var k= parts[parts.length-1];
